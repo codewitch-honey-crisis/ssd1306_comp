@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
 
 internal partial class Program
 {
@@ -22,6 +15,7 @@ internal partial class Program
 	static void Run()
 	{
 		var bitmaps = new List<Bitmap>();
+		// the byte arrays containing the monoized pixel data
 		var monos = new List<byte[]>();
 		try
 		{
@@ -37,6 +31,8 @@ internal partial class Program
 			}
 			foreach (var bmp in bitmaps)
 			{
+				// pack the bitmap into the SSD1306 native framebuffer
+				// format
 				var bytes = new byte[bmp.Width * bmp.Height / 8];
 				var i = 0;
 				for (var yy = 0; yy < bmp.Height; yy += 8)
@@ -91,6 +87,8 @@ internal partial class Program
 			names[i] = _MakeSafeName(Path.GetFileNameWithoutExtension(Inputs[i].Name));
 			Output.Write(names[i]);
 			Output.WriteLine("[] PROGMEM = {");
+			// try each of the RLE mechanisms in turn:
+			// this one RLE's both white and black runs (0x00 and 0xFF)
 			var sb1 = new StringBuilder();
 			var len1 = 0;
 			var j = 0;
@@ -126,6 +124,8 @@ internal partial class Program
 				++j;
 				++len1;
 			}
+			// next compression method
+			// this one RLE's black runs only (0x00)
 			var sb2 = new StringBuilder();
 			var len2 = 0;
 			j = 0;
@@ -161,6 +161,8 @@ internal partial class Program
 				++j;
 				++len2;
 			}
+			// next compression method
+			// this one RLE's white runs only (0x00)
 			var sb3 = new StringBuilder();
 			var len3 = 0;
 			j = 0;
@@ -196,6 +198,8 @@ internal partial class Program
 				++j;
 				++len3;
 			}
+			// next method
+			// this one does no compression
 			var sb4 = new StringBuilder();
 			var len4 = 0;
 			j = 0;
@@ -250,7 +254,6 @@ internal partial class Program
 
 		for (int i = 0; i < monos.Count; i++)
 		{
-			var mono = monos[i];
 			var n = names[i];
 			Output.Write("    ");
 			Output.Write(cname + "_");
@@ -268,7 +271,6 @@ internal partial class Program
 
 		for (int i = 0; i < monos.Count; i++)
 		{
-			var mono = monos[i];
 			var n = names[i];
 			Output.Write("    ");
 			Output.Write(cname.ToUpperInvariant() + "_");
@@ -290,24 +292,24 @@ internal partial class Program
 		{
 			return nname;
 		}
-		var sbname = new StringBuilder(nname.Length);
+		var result = new StringBuilder(nname.Length);
 		if(char.IsDigit(nname,0))
 		{
-			sbname.Append('_');
+			result.Append('_');
 		}
 		for (int i = 0; i < nname.Length; ++i)
 		{
 			if (!char.IsLetterOrDigit(nname,i))
 			{
-				sbname.Append('_');
+				result.Append('_');
 			}
 			else
 			{
-				sbname.Append(nname[i]);
+				result.Append(nname[i]);
 			}
 		}
 
-		return sbname.ToString();
+		return result.ToString();
 	}
 }
 
