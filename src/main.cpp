@@ -135,105 +135,83 @@ const uint8_t ssd1306_init[] PROGMEM = {
     0xAF, 0};
 #endif
 
-void ssd1306_send_command(uint8_t cmd, const uint8_t *args, size_t argslen)
-{
-  Wire.write(0x00);
-  Wire.write(cmd);
-  while (argslen--)
-  {
-    uint8_t b = pgm_read_byte(args++);
-    Wire.write(b);
-  }
-}
 void ssd1306_send_screen(int index)
 {
-  const uint8_t *data = output_images[index];
-  int comp = output_images_compression[index];
-  Wire.beginTransmission(0x3C);
-  uint8_t args[] = {
-      0, 3};
-  ssd1306_send_command(0x22, args, sizeof(args));
-  args[1] = 127;
-  ssd1306_send_command(0x21, args, sizeof(args));
-  Wire.endTransmission();
-  size_t rem = I2C_BUFFER_LENGTH - 1;
-  int len = 0;
-  Wire.beginTransmission(0x3C);
-  Wire.write(0x40);
-  switch (comp)
-  {
-  case 0: // no compression
-    while (len < (SSD1306_HEIGHT*16))
+    const uint8_t *data = output_images[index];
+    int comp = output_images_compression[index];
+    Wire.beginTransmission(0x3C);
+
+    Wire.write(0x00);
+    Wire.write(0x22);
+    Wire.write(0x00);
+    Wire.write(0xFF);
+
+    Wire.write(0x00);
+    Wire.write(0x21);
+    Wire.write(0x00);
+    Wire.write(0x7F);
+
+    Wire.endTransmission();
+
+    size_t rem = I2C_BUFFER_LENGTH - 1;
+    int len = 0;
+    Wire.beginTransmission(0x3C);
+    Wire.write(0x40);
+    while (len < (SSD1306_HEIGHT * 16))
     {
-      uint8_t b = pgm_read_byte(data++);
-      Wire.write(b);
-      ++len;
-      --rem;
-      if (rem == 0)
-      {
-        rem = I2C_BUFFER_LENGTH - 1;
-        Wire.endTransmission();
-        Wire.beginTransmission(0x3C);
-        Wire.write(0x40);
-      }
-    }
-    break;
-  default:
-    while (len < (SSD1306_HEIGHT*16))
-    {
-      uint8_t b = pgm_read_byte(data++);
-      uint8_t count = 1;
-      if (((comp == 1 || comp == 3) && b == 0) || ((comp == 2 || comp == 3) && b == 255))
-      {
-        count = pgm_read_byte(data++);
-      }
-      while (count--)
-      {
-        Wire.write(b);
-        ++len;
-        --rem;
-        if (rem == 0)
+        uint8_t b = pgm_read_byte(data++);
+        uint8_t count = 1;
+        if (((comp == 1 || comp == 3) && b == 0) ||
+            ((comp == 2 || comp == 3) && b == 255))
         {
-          rem = I2C_BUFFER_LENGTH - 1;
-          Wire.endTransmission();
-          Wire.beginTransmission(0x3C);
-          Wire.write(0x40);
+            count = pgm_read_byte(data++);
         }
-      }
+        while (count--)
+        {
+            Wire.write(b);
+            ++len;
+            --rem;
+            if (rem == 0)
+            {
+                rem = I2C_BUFFER_LENGTH - 1;
+                Wire.endTransmission();
+                Wire.beginTransmission(0x3C);
+                Wire.write(0x40);
+            }
+        }
     }
-    break;
-  }
-  Wire.endTransmission();
+    Wire.endTransmission();
 }
 void setup()
 {
-  #ifdef ESP32
-  Wire.begin(I2C_SDA, I2C_SCL, 800 * 1000);
-  #else
-  Wire.begin();
-  #endif
-  Serial.begin(115200);
-  Wire.beginTransmission(0x3C);
-  const uint8_t *init = ssd1306_init;
-  uint8_t len = pgm_read_byte(init);
-  const uint8_t *p = init + 1;
-  while (len--)
-  {
-    uint8_t cmd = pgm_read_byte(p++);
-    uint8_t arglen = pgm_read_byte(p++);
-    ssd1306_send_command(cmd, p, arglen);
-    p += arglen;
-  }
-  Wire.endTransmission();
+#ifdef ESP32
+    Wire.begin(I2C_SDA, I2C_SCL, 800 * 1000);
+#else
+    Wire.begin();
+#endif
+    Serial.begin(115200);
+    Wire.beginTransmission(0x3C);
+    const uint8_t *init = ssd1306_init;
+    uint8_t len = pgm_read_byte(init);
+    const uint8_t *p = init + 1;
+    while (len--)
+    {
+        Wire.write(0x00);
+        Wire.write(pgm_read_byte(p++));
+        uint8_t arglen = pgm_read_byte(p++);
+        while (arglen--)
+            Wire.write(pgm_read_byte(p++));
+    }
+    Wire.endTransmission();
 }
 
 void loop()
 {
-  static int index = 0;
-  ssd1306_send_screen(index++);
-  delay(100);
-  if (index == 4)
-  {
-    index = 0;
-  }
+    static int index = 0;
+    ssd1306_send_screen(index++);
+    delay(100);
+    if (index == 4)
+    {
+        index = 0;
+    }
 }
