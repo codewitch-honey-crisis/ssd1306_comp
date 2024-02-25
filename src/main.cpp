@@ -6,7 +6,6 @@
 #endif
 
 #define SSD1306_HEIGHT 32
-#if 0
 const uint8_t output_frame_1[] PROGMEM = {
     0xff, 131, 0x3f, 0x9f, 0xcf, 0xef,
     0xe7, 0xe7, 0xf3, 0xf3, 0xfb, 0xfb,
@@ -214,7 +213,6 @@ void ssd1306_send_screen(int index)
   }
   Wire.endTransmission();
 }
-#endif
 void setup()
 {
   #ifdef ESP32
@@ -223,7 +221,6 @@ void setup()
   Wire.begin();
   #endif
   Serial.begin(115200);
-#if 0
   Wire.beginTransmission(0x3C);
   const uint8_t *init = ssd1306_init;
   uint8_t len = pgm_read_byte(init);
@@ -236,12 +233,10 @@ void setup()
     p += arglen;
   }
   Wire.endTransmission();
-#endif
 }
 
 void loop()
 {
-#if 0
   static int index = 0;
   ssd1306_send_screen(index++);
   delay(100);
@@ -249,5 +244,4 @@ void loop()
   {
     index = 0;
   }
-#endif
 }
