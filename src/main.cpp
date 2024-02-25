@@ -20,8 +20,9 @@ const uint8_t output_frame_1[] PROGMEM = {
     0xbf, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f,
     0x3f, 0x3f, 0xbf, 0xbf, 0x9f, 0x9f,
     0xcf, 0xcf, 0xef, 0xe7, 0xf3, 0xf9,
-    0xfc, 0xfe, 0xff, 96};
-const int output_frame_1_compression = 3;
+    0xfc, 0xfe, 0xff, 96
+};
+#define OUTPUT_FRAME_1_COMPRESSION 3
 
 // [Compressed to 16.40625% of original. Len = 84 vs 512]
 
@@ -39,8 +40,9 @@ const uint8_t output_frame_2[] PROGMEM = {
     0x9e, 0xbf, 0xbf, 0xbf, 0x3f, 0x3f,
     0x3f, 0x3f, 0x3f, 0xbf, 0xbf, 0xbe,
     0x9f, 0x9f, 0xdf, 0xcf, 0xcf, 0xe7,
-    0xf7, 0xf3, 0xf8, 0xfc, 0xff, 64};
-const int output_frame_2_compression = 3;
+    0xf7, 0xf3, 0xf8, 0xfc, 0xff, 64
+};
+#define OUTPUT_FRAME_2_COMPRESSION 3
 
 // [Compressed to 16.40625% of original. Len = 84 vs 512]
 
@@ -59,8 +61,9 @@ const uint8_t output_frame_3[] PROGMEM = {
     0x9f, 0x9f, 0xbf, 0x3f, 0x3f, 0x3f,
     0x3f, 0x3f, 0x3f, 0x3f, 0xbf, 0x9f,
     0x9f, 0xdf, 0xcf, 0xef, 0xe7, 0xf3,
-    0xf9, 0xfc, 0xfe, 0xff, 33};
-const int output_frame_3_compression = 3;
+    0xf9, 0xfc, 0xfe, 0xff, 33
+};
+#define OUTPUT_FRAME_3_COMPRESSION 3
 
 // [Compressed to 17.96875% of original. Len = 92 vs 512]
 
@@ -76,22 +79,24 @@ const uint8_t output_frame_4[] PROGMEM = {
     0x9e, 0x9c, 0xbc, 0xbc, 0xbe, 0xbf,
     0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0xbe,
     0xbc, 0xbc, 0xbc, 0x9e, 0x9f, 0xdf,
-    0xcf, 0xcf, 0xe7, 0xf3, 0xf3, 0xf8};
-const int output_frame_4_compression = 3;
+    0xcf, 0xcf, 0xe7, 0xf3, 0xf3, 0xf8
+};
+#define OUTPUT_FRAME_4_COMPRESSION 3
 
 // [Compressed to 14.0625% of original. Len = 72 vs 512]
 
-const uint8_t *output_images[] = {
+const uint8_t* output_images[] = {
     output_frame_1,
     output_frame_2,
     output_frame_3,
-    output_frame_4};
+    output_frame_4
+};
 const int output_images_compression[] = {
-    output_frame_1_compression,
-    output_frame_2_compression,
-    output_frame_3_compression,
-    output_frame_4_compression};
-
+    OUTPUT_FRAME_1_COMPRESSION,
+    OUTPUT_FRAME_2_COMPRESSION,
+    OUTPUT_FRAME_3_COMPRESSION,
+    OUTPUT_FRAME_4_COMPRESSION
+};
 #if SSD1306_HEIGHT == 32
 const uint8_t ssd1306_init[] PROGMEM = {
     17,
