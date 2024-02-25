@@ -14,18 +14,20 @@ Since the header is geared for QMK rather than Arduino, you'll probably want to 
 
 If your screen is 128x64 then you need to change the SSD1306_HEIGHT define to reflect that. It's currently configured for 32
 
+## Space requirements (ESP32S3)
+
 Empty project
-RAM: used 18242 bytes from 327680 bytes
-Flash: used 234057 bytes from 3342336 bytes
+- RAM: 18242 bytes
+- Flash: 234057 bytes
 
 Just Wire lib
-RAM: used 18628 bytes from 327680 bytes
-Flash: used 257077 bytes from 3342336 bytes
+- RAM: 18628 bytes
+- Flash: 257077 bytes
 
 Wire lib w/ Transmission
-used 18652 bytes from 327680 bytes
-used 262029 bytes from 3342336 bytes
+- RAM: 18652 bytes
+- Flash: 262029 bytes
 
 SSD1306 driver + animations
-RAM: used 18652 bytes from 327680 bytes
-Flash: used 277765 bytes from 3342336 bytes
+- RAM: 18652 bytes
+- Flash: 277765 bytes
