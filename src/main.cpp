@@ -189,7 +189,6 @@ void setup()
 #else
     Wire.begin();
 #endif
-    Serial.begin(115200);
     Wire.beginTransmission(0x3C);
     const uint8_t *init = ssd1306_init;
     uint8_t len = pgm_read_byte(init);
