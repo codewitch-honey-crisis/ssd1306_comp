@@ -1,3 +1,4 @@
+#define IMPL
 #include <Arduino.h>
 #include <Wire.h>
 #ifdef ESP32
@@ -5,6 +6,7 @@
 #define I2C_SCL 17
 #endif
 
+#ifdef IMPL
 #define SSD1306_HEIGHT 32
 const uint8_t output_frame_1[] PROGMEM = {
     0xff, 131, 0x3f, 0x9f, 0xcf, 0xef,
@@ -182,6 +184,7 @@ void ssd1306_send_screen(int index)
     }
     Wire.endTransmission();
 }
+#endif
 void setup()
 {
 #ifdef ESP32
@@ -190,6 +193,8 @@ void setup()
     Wire.begin();
 #endif
     Wire.beginTransmission(0x3C);
+#ifdef IMPL
+
     const uint8_t *init = ssd1306_init;
     uint8_t len = pgm_read_byte(init);
     const uint8_t *p = init + 1;
@@ -201,6 +206,7 @@ void setup()
         while (arglen--)
             Wire.write(pgm_read_byte(p++));
     }
+#endif
     Wire.endTransmission();
 }
 

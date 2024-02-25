@@ -22,6 +22,10 @@ Just Wire lib
 RAM: used 18628 bytes from 327680 bytes
 Flash: used 257077 bytes from 3342336 bytes
 
-Animations
+Wire lib w/ Transmission
+used 18652 bytes from 327680 bytes
+used 262029 bytes from 3342336 bytes
+
+SSD1306 driver + animations
 RAM: used 18652 bytes from 327680 bytes
 Flash: used 277765 bytes from 3342336 bytes
