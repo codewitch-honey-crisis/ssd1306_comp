@@ -145,14 +145,6 @@ void ssd1306_send_command(uint8_t cmd, const uint8_t *args, size_t argslen)
     Wire.write(b);
   }
 }
-void ssd1306_send_data(const uint8_t *data, size_t len)
-{
-  Wire.write(0x40);
-  if (len)
-  {
-    Wire.write(data, len);
-  }
-}
 void ssd1306_send_screen(int index)
 {
   const uint8_t *data = output_images[index];
