@@ -195,9 +195,8 @@ void setup()
     Wire.begin();
 #endif
     Wire.beginTransmission(0x3C);
-    const uint8_t *init = ssd1306_init;
-    uint8_t len = pgm_read_byte(init);
-    const uint8_t *p = init + 1;
+    uint8_t len = pgm_read_byte(ssd1306_init);
+    const uint8_t *p = ssd1306_init + 1;
     while (len--)
     {
         Wire.write(0x00);

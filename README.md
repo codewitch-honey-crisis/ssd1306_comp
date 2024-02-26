@@ -24,10 +24,6 @@ Just Wire lib
 - RAM: 18628 bytes
 - Flash: 257077 bytes
 
-Wire lib w/ Transmission
+Wire + SSD1306 driver + animations
 - RAM: 18652 bytes
 - Flash: 262029 bytes
-
-SSD1306 driver + animations
-- RAM: 18652 bytes
-- Flash: 277765 bytes
